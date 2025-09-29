@@ -1,3 +1,6 @@
+let coord1 = null;
+let coord2 = null;
+
 // Zapytanie do API
 function szukaj(inputId, outputId, townOutputId) {
 	let adres = document.getElementById(inputId).value;
@@ -26,6 +29,12 @@ function szukaj(inputId, outputId, townOutputId) {
 				output.innerHTML = outputString;
 				townOutput.innerText = fullName;
 
+				if (inputId == 'input1') {
+					coord1 = { lat, lon };
+				} else if (inputId == 'input2') {
+					coord2 = { lat, lon };
+				}
+
 			} else {
 				output.innerText = "Nie znaleziono.";
 			}
@@ -51,7 +60,7 @@ function showButton() {
 		let text = outputs[i].innerText.trim();
 
 		if (
-			text === "" ||
+			text == "" ||
 			text.includes("Nie znaleziono.") ||
 			text.includes("Błąd.")
 		) {
@@ -68,13 +77,36 @@ function showButton() {
 	}
 }
 
+function deg2rad(deg) {
+	return deg * (Math.PI / 180);
+}
+function rad2deg(rad) {
+	return rad * (180 / Math.PI);
+}
+
 // Obliczanie odległości
 function obliczOdleglosc() {
-	// Wyświetlenie outputu po kliknięciu przycisku obliczOdleglosc
 	let calculationOutput = document.getElementById("calculationOutput");
 	calculationOutput.style.display = "block";
 
-	let kmOutput = document.getElementById("kmOutput");
-	kmOutput.innerText = 'xxx';
+	let rz = 6371;
+	let d1 = coord1.lon;
+	let s1 = coord1.lat;
+	let d2 = coord2.lon;
+	let s2 = coord2.lat;
 
+	let Ra = Math.abs(d1 - d2);
+	let Rb = Math.abs(s1 - s2);
+
+	let Rra = deg2rad(Ra);
+	let Rrb = deg2rad(Rb);
+	let Rrc = Math.acos(Math.cos(Rra) * Math.cos(Rrb));
+
+	let Rc = rad2deg(Rrc)
+
+	let dystans = (Rc / 360) * 2 * Math.PI * rz;
+
+
+	let kmOutput = document.getElementById("kmOutput");
+	kmOutput.innerText = dystans.toFixed(2);
 }
