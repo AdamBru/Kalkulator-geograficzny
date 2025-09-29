@@ -1,1 +1,2 @@
-# Kalkulator-geograficzny
+# Kalkulator geograficzny
+[Link](https://adambru.github.io/Kalkulator-geograficzny/)
