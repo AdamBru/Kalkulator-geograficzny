@@ -89,22 +89,23 @@ function obliczOdleglosc() {
 	let calculationOutput = document.getElementById("calculationOutput");
 	calculationOutput.style.display = "block";
 
-	let rz = 6371;
-	let d1 = coord1.lon;
-	let s1 = coord1.lat;
-	let d2 = coord2.lon;
-	let s2 = coord2.lat;
+    let rz = 6371; 
+    
+    let lat1 = deg2rad(coord1.lat);
+    let lon1 = deg2rad(coord1.lon);
+    let lat2 = deg2rad(coord2.lat);
+    let lon2 = deg2rad(coord2.lon);
 
-	let Ra = Math.abs(d1 - d2);
-	let Rb = Math.abs(s1 - s2);
+    let dLat = lat2 - lat1;
+    let dLon = lon2 - lon1;
 
-	let Rra = deg2rad(Ra);
-	let Rrb = deg2rad(Rb);
-	let Rrc = Math.acos(Math.cos(Rra) * Math.cos(Rrb));
-
-	let Rc = rad2deg(Rrc)
-
-	let dystans = (Rc / 360) * 2 * Math.PI * rz;
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1) * Math.cos(lat2) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+    let dystans = rz * c;
 
 
 	let kmOutput = document.getElementById("kmOutput");
